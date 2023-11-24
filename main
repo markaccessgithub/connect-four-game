@@ -1,0 +1,206 @@
+import string
+
+
+
+
+def draw(grid,rows,columns):
+    print("")
+    header = []
+    headerLine = []
+    for i in range(columns):
+        header.append(i+1)
+        headerLine.append("|")
+    header = str(header)
+    headerLine = str(headerLine)
+    punc = '''!()[]{};:'"\,<>./?@#$%^&*_~'''
+    for ele in header:
+        if ele in punc:
+            header = header.replace(ele, "")
+    for ele in headerLine:
+        if ele in punc:
+            headerLine = headerLine.replace(ele, "")
+   
+    print(header)
+    print(headerLine)
+    board = []
+    for i in range(rows):
+        grids = []
+        for j in range(columns):
+            grids.append(grid[i][j])
+        grids.append("- row ")
+        grids.append(i+1)
+        grids = str(grids)
+        for ele in grids:
+            if ele in punc:
+                grids = grids.replace(ele, "")
+        board.append(grids)
+        print(grids)
+
+
+def check_win(grid, row, column):
+    if player == 1:
+        check = grid[row-1]
+        for i in range(len(check)):
+            if check[i] == "B":
+                if check[i+1] == "B":
+                    if check[i+2] == "B":
+                        if check[i+3] == "B":
+                            return True
+        for i in range(rows):
+            if grid[i][column-1] == "B" and (i+3 < rows):
+                if grid[i+1][column-1] == "B":
+                    if grid[i+2][column-1] == "B":
+                        if grid[i+3][column-1] == "B":
+                            return True
+        for i in range(rows):
+            for j in range(columns):
+                if grid[i][j] == "B" and (i+3 < rows) and (j+3 < columns):
+                    if grid[i+1][j+1] == "B":
+                        if grid[i+2][j+2] == "B":
+                            if grid[i+3][j+3] == "B":
+                                return True
+        for i in range(rows):
+            for j in range(columns):
+                if grid[i][j] == "B" and (i-3 < rows) and (j+3 < columns):
+                    if grid[i-1][j+1] == "B":
+                        if grid[i-2][j+2] == "B":
+                            if grid[i-3][j+3] == "B":
+                                return True                
+        return False
+
+
+
+
+
+
+    if player == 2:
+        check = grid[row-1]
+        for i in range(len(check)):
+            if check[i] == "R":
+                if check[i+1] == "R":
+                    if check[i+2] == "R":
+                        if check[i+3] == "R":
+                            return True
+        for i in range(rows):
+            if grid[i][column-1] == "R" and (i+3 < rows):
+                if grid[i+1][column-1] == "R":
+                    if grid[i+2][column-1] == "R":
+                        if grid[i+3][column-1] == "R":
+                            return True
+        for i in range(rows):
+            for j in range(columns):
+                if grid[i][j] == "B" and (i+3 < rows) and (j+3 < columns):
+                    if grid[i+1][j+1] == "B":
+                        if grid[i+2][j+2] == "B":
+                            if grid[i+3][j+3] == "B":
+                                return True
+        for i in range(rows):
+            for j in range(columns):
+                if grid[i][j] == "B" and (i-3 < rows) and (j+3 < columns):
+                    if grid[i-1][j+1] == "B":
+                        if grid[i-2][j+2] == "B":
+                            if grid[i-3][j+3] == "B":
+                                return True
+        return False
+
+
+
+
+def add_piece(grid, column, row, player):
+    if row == False:
+        print("Invalid move, next turn")
+        return grid
+    if player == 1:
+        piece = "B"
+    else:
+        piece = "R"
+    grid[row-1][column-1] = piece
+    return grid
+
+
+
+
+def checkrow(column,grid):
+    row = len(board)
+    while row > 0:
+        if grid[row-1][column-1] == 0:
+            return row
+        row -= 1
+    return False
+#- MAIN PROGRAM ----------------------------------------------
+
+
+
+
+
+
+
+
+board = []
+rows = int(input("How many rows should there be?: "))
+columns = int(input("How many columns should there be?: "))
+for i in range(rows):
+    board.append([])
+    for j in range(columns):
+        board[i].append(0)
+won = False
+print(board)
+
+
+
+
+draw(board, rows, columns)
+
+
+
+
+player = 1
+while not won == True:
+    print("It is player " + str(player) + "'s go.")
+    c_choice = int(input("Enter the column number. "))
+    if c_choice > len(board[0]):
+        while c_choice > len(board[0]):
+            print("Invalid choice, choose again")
+            c_choice = int(input("Enter the column number. "))
+
+
+
+
+    row = checkrow(c_choice,board)
+
+
+
+
+
+
+
+
+    board = add_piece(board, c_choice, row, player)
+
+
+
+
+    won = check_win(board,row,c_choice)
+    if player == 1:
+        player = 2
+    else:
+        player = 1
+
+
+
+
+
+
+
+
+    draw(board, rows, columns)
+
+
+
+
+if player == 1:
+    player = 2
+else:
+    player = 1
+print("Player " + str(player) + " has won!")
+input("Press enter to exit.")
